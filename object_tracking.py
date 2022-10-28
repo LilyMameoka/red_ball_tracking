@@ -46,56 +46,57 @@ def analysis_blob(binary_img):
 
 
 def main():
-    # データ格納用のリスト
-    data = []
+    try:
+        # データ格納用のリスト
+        data = []
 
-    # 動画ファイルのパス
-    videofile_path = "./sample.mp4"
+        # 動画ファイルのパス
+        videofile_path = "./sample.mp4"
 
-    # 記録データの保存先パス
-    csvfile_path = "./data.csv"
+        # 記録データの保存先パス
+        csvfile_path = "./data.csv"
 
-    # カメラのキャプチャ
-    cap = cv2.VideoCapture(0)
+        # カメラのキャプチャ
+        cap = cv2.VideoCapture(0)
 
-    # 開始時間
-    start = time.time()
+        # 開始時間
+        start = time.time()
 
-    while(cap.isOpened()):
-        # フレームを取得
-        ret, frame = cap.read()
+        while(cap.isOpened()):
+            # フレームを取得
+            ret, frame = cap.read()
 
-        # カラートラッキング（赤色）
-        mask = red_detect(frame)
+            # カラートラッキング（赤色）
+            mask = red_detect(frame)
 
-        # マスク画像をブロブ解析（面積最大のブロブ情報を取得）
-        target = analysis_blob(mask)
+            # マスク画像をブロブ解析（面積最大のブロブ情報を取得）
+            target = analysis_blob(mask)
 
-        # 面積最大ブロブの中心座標を取得
-        center_x = int(target["center"][0])
-        center_y = int(target["center"][1])
+            # 面積最大ブロブの中心座標を取得
+            center_x = int(target["center"][0])
+            center_y = int(target["center"][1])
 
-        # フレームに面積最大ブロブの中心周囲を円で描く
-        cv2.circle(frame, (center_x, center_y), 30, (0, 200, 0),
-                   thickness=3, lineType=cv2.LINE_AA)
+            # フレームに面積最大ブロブの中心周囲を円で描く
+            cv2.circle(frame, (center_x, center_y), 30, (0, 200, 0),
+                    thickness=3, lineType=cv2.LINE_AA)
 
-        # 経過時間, x, yをリストに追加
-        data.append([time.time() - start, center_x, center_y])
+            # 経過時間, x, yをリストに追加
+            data.append([time.time() - start, center_x, center_y])
 
-        # ウィンドウ表示
-        cv2.imshow("Frame", frame)
-        cv2.imshow("Mask", mask)
+            # ウィンドウ表示
+            cv2.imshow("Frame", frame)
+            cv2.imshow("Mask", mask)
 
-        # qキーが押されたら途中終了
-        if cv2.waitKey(10000):
-            break
+            # qキーが押されたら途中終了
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                break
+    except KeyboardInterrupt:
+        # CSVファイルに保存
+        np.savetxt(csvfile_path, np.array(data), delimiter=",")
 
-    # CSVファイルに保存
-    np.savetxt(csvfile_path, np.array(data), delimiter=",")
-
-    # キャプチャ解放・ウィンドウ廃棄
-    cap.release()
-    cv2.destroyAllWindows()
+        # キャプチャ解放・ウィンドウ廃棄
+        cap.release()
+        cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
