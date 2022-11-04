@@ -13,8 +13,8 @@ def main():
     y = data[:,2]
 
     # グラフにプロット
-    plt.rcParams["font.family"] = "Times New Roman" # フォントの種類
-    plt.plot(x, y, "r-", label="coordinate")
+    plt.rcParams["font.family"] = "IPAexGothic" # フォントの種類
+    plt.plot(x, y, "r-", label="座標")
     plt.xlabel("x軸", fontsize=16)     # x軸ラベル
     plt.ylabel("y軸", fontsize=16)    # y軸ラベル
     plt.grid()         # グリッド表示
