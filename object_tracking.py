@@ -16,10 +16,10 @@ def red_detect(img):
     hsv_min = np.array([150,127,0])
     hsv_max = np.array([179,255,255])
     mask2 = cv2.inRange(hsv, hsv_min, hsv_max)
-    
+
     return mask1 + mask2
 
-# ブロブ解析
+# Blobの解析
 def analysis_blob(binary_img):
     # 2値画像のラベリング処理
     label = cv2.connectedComponentsWithStats(binary_img)
@@ -41,7 +41,7 @@ def analysis_blob(binary_img):
     maxblob["height"] = data[:, 3][max_index]  # 高さ
     maxblob["area"] = data[:, 4][max_index]   # 面積
     maxblob["center"] = center[max_index]  # 中心座標
-    
+
     return maxblob
 
 
@@ -49,9 +49,6 @@ def main():
     try:
         # データ格納用のリスト
         data = []
-
-        # 動画ファイルのパス
-        videofile_path = "./sample.mp4"
 
         # 記録データの保存先パス
         csvfile_path = "./data.csv"
@@ -97,7 +94,6 @@ def main():
         # キャプチャ解放・ウィンドウ廃棄
         cap.release()
         cv2.destroyAllWindows()
-
 
 if __name__ == '__main__':
     main()
