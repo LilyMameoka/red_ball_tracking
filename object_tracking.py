@@ -54,7 +54,7 @@ def main():
         csvfile_path = "./data.csv"
 
         # カメラのキャプチャ
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1)
 
         # 開始時間
         start = time.time()
@@ -87,7 +87,7 @@ def main():
             # qキーが押されたら途中終了
             if cv2.waitKey(25) & 0xFF == ord('q'):
                 break
-    except KeyboardInterrupt:
+    except:
         # CSVファイルに保存
         np.savetxt(csvfile_path, np.array(data), delimiter=",")
 
