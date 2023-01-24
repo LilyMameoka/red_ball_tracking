@@ -54,7 +54,7 @@ def main():
         csvfile_path = "./data.csv"
 
         # カメラのキャプチャ
-        cap = cv2.VideoCapture(1)
+        cap = cv2.VideoCapture('./input.mov')
 
         # 開始時間
         start = time.time()
